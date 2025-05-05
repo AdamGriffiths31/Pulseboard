@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -19,6 +20,9 @@ import (
 )
 
 func main() {
+	runPoller := flag.Bool("run-poller", false, "Run the poller to monitor endpoints")
+	flag.Parse()
+
 	log.Println("Pulseboard Poller Starting...")
 
 	sqlClient, err := db.NewSQLiteClient("metrics.db")
@@ -64,10 +68,17 @@ func main() {
 		}
 	}
 
-	stopChan := make(chan os.Signal, 1)
-	signal.Notify(stopChan, syscall.SIGINT, syscall.SIGTERM)
+	if *runPoller {
+		stopChan := make(chan os.Signal, 1)
+		signal.Notify(stopChan, syscall.SIGINT, syscall.SIGTERM)
 
-	poller.StartPolling(endpoints, sqlClient)
+		poller.StartPolling(endpoints, sqlClient)
+
+		go func() {
+			<-stopChan
+			log.Println("Shutting down poller...")
+		}()
+	}
 
 	// Set up HTTP routes and handlers
 	http.HandleFunc("/getlatency", handlers.GetLatencyMetrics(sqlClient))
@@ -87,6 +98,5 @@ func main() {
 		}
 	}()
 
-	<-stopChan
-	log.Println("Shutting down poller...")
+	select {}
 }

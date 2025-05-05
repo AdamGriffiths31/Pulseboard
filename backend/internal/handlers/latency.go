@@ -9,7 +9,7 @@ import (
 )
 
 // Handler function to get the latest metrics
-func GetLatencyMetrics(dbClient *db.SQLiteClient) http.HandlerFunc {
+func GetLatencyMetrics(dbClient db.DBClient) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Received request for latest metrics from %s", r.RemoteAddr)
 		w.Header().Set("Access-Control-Allow-Origin", "*") // TODO: Make this configurable

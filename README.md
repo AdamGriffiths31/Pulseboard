@@ -10,6 +10,7 @@ Pulseboard is a full-stack application designed to monitor and visualize API per
 - **Backend API**: A Go-based backend with SQLite for data storage and RESTful endpoints.
 - **Frontend**: A React-based dashboard styled with Tailwind CSS.
 - **Test Data Generation**: Backend endpoint to generate mock data for testing and demonstration.
+- **Configurable Poller**: The backend poller can be enabled or disabled using a `--run-poller` flag.
 
 ## Technologies Used
 
@@ -24,6 +25,10 @@ Pulseboard is a full-stack application designed to monitor and visualize API per
 - **SQLite**: Lightweight database for storing metrics.
 - **Gorilla WebSocket**: For real-time communication.
 - **RESTful API**: For fetching historical data and generating test data.
+- **Endpoints**:
+  - `/getlatency`: Fetch historical latency metrics.
+  - `/statuscodedistribution`: Fetch status code distribution metrics.
+  - `/generatetestdata`: Generate mock data for testing and demonstration purposes.
 
 ## Architecture Overview
 
@@ -74,6 +79,14 @@ Pulseboard is a full-stack application designed to monitor and visualize API per
 2. Run the Go server:
    ```bash
    go run ./cmd/poller/main.go
+   ```
+3. To enable the poller, pass the `--run-poller` flag:
+   ```bash
+   go run ./cmd/poller/main.go --run-poller
+   ```
+4. Use the `/generatetestdata` endpoint to populate the database with mock data:
+   ```bash
+   curl http://localhost:8080/generatetestdata
    ```
 
 The frontend will be available at `http://localhost:5173`, and the backend API will run on `http://localhost:8080`.

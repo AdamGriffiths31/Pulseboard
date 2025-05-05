@@ -9,7 +9,7 @@ import (
 )
 
 // Handler function to get the latest metrics
-func GetStatusCodeDistribution(dbClient *db.SQLiteClient) http.HandlerFunc {
+func GetStatusCodeDistribution(dbClient db.DBClient) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Received request for status code distribution from %s", r.RemoteAddr)
 		w.Header().Set("Access-Control-Allow-Origin", "*") // TODO: Make this configurable

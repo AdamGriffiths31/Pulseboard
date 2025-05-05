@@ -11,7 +11,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func GenerateTestData(dbClient *db.SQLiteClient) http.HandlerFunc {
+func GenerateTestData(dbClient db.DBClient) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Generating test data...")
 

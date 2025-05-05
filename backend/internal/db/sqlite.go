@@ -10,6 +10,16 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+type DBClient interface {
+	GetAllMetrics(startDate, endDate string) ([]models.Metric, error)
+	GetStatusCodeDistributionByURL(startDate, endDate string) (map[string][]models.StatusCodeCount, error)
+	StoreMetric(m models.Metric) error
+	StoreEndpoint(ep models.MonitoredEndpoint) error
+	GetAllEndpoints() ([]models.MonitoredEndpoint, error)
+	DeleteDatabase() error
+	CreateDatabase() error
+}
+
 type SQLiteClient struct {
 	DB *sql.DB
 }
