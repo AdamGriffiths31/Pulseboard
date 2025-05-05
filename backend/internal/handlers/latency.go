@@ -18,8 +18,6 @@ func GetLatencyMetrics(dbClient *db.SQLiteClient) http.HandlerFunc {
 		startDateStr := r.URL.Query().Get("startDate")
 		endDateStr := r.URL.Query().Get("endDate")
 
-		log.Printf("Start date: %s, End date: %s", startDateStr, endDateStr)
-
 		// Fetch the latest metrics from the database
 		metrics, err := dbClient.GetAllMetrics(startDateStr, endDateStr)
 		if err != nil {
@@ -27,8 +25,6 @@ func GetLatencyMetrics(dbClient *db.SQLiteClient) http.HandlerFunc {
 			http.Error(w, "Internal server error while fetching metrics", http.StatusInternalServerError)
 			return
 		}
-
-		log.Printf("Fetched %d metrics from the database", len(metrics))
 
 		// If no metrics, return an empty array with 200 OK
 		if len(metrics) == 0 {

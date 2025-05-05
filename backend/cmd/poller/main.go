@@ -12,6 +12,7 @@ import (
 	"github.com/AdamGriffiths31/pulseboard/internal/db"
 	"github.com/AdamGriffiths31/pulseboard/internal/handlers"
 	"github.com/AdamGriffiths31/pulseboard/internal/models"
+	"github.com/AdamGriffiths31/pulseboard/internal/websocket"
 
 	"github.com/google/uuid"
 )
@@ -71,6 +72,9 @@ func main() {
 	http.HandleFunc("/getlatency", handlers.GetLatencyMetrics(sqlClient))
 	http.HandleFunc("/statuscodedistribution", handlers.GetStatusCodeDistribution(sqlClient))
 	http.HandleFunc("/generatetestdata", handlers.GenerateTestData(sqlClient))
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		websocket.HandleWebSocket(w, r, sqlClient)
+	})
 
 	port := ":8080"
 	fmt.Printf("API Server running on http://localhost%s\n", port)
