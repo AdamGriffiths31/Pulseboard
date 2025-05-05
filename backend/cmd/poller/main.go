@@ -12,6 +12,7 @@ import (
 	"github.com/AdamGriffiths31/pulseboard/internal/db"
 	"github.com/AdamGriffiths31/pulseboard/internal/handlers"
 	"github.com/AdamGriffiths31/pulseboard/internal/models"
+	"github.com/AdamGriffiths31/pulseboard/internal/poller"
 	"github.com/AdamGriffiths31/pulseboard/internal/websocket"
 
 	"github.com/google/uuid"
@@ -66,7 +67,7 @@ func main() {
 	stopChan := make(chan os.Signal, 1)
 	signal.Notify(stopChan, syscall.SIGINT, syscall.SIGTERM)
 
-	// poller.StartPolling(endpoints, sqlClient)
+	poller.StartPolling(endpoints, sqlClient)
 
 	// Set up HTTP routes and handlers
 	http.HandleFunc("/getlatency", handlers.GetLatencyMetrics(sqlClient))
